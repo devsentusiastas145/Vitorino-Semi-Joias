@@ -8,7 +8,9 @@
 // ============================================
 // PRODUTOS
 // ============================================
-const products = [
+let products = [];
+
+const _hardcodedProducts = [
   {
     id: 1, name: 'Colar Lua Crescente', category: 'colares',
     price: 189.90, originalPrice: 239.90,
@@ -166,6 +168,32 @@ const products = [
     material: 'Prata 925 com banho ouro 18k', rating: 5, reviews: 52,
   },
 ];
+
+async function loadProducts() {
+  try {
+    const res = await fetch('http://localhost:3000/produtos');
+    const data = await res.json();
+    products = data.map(p => ({
+      id: p.id,
+      name: p.name,
+      category: p.category,
+      price: parseFloat(p.price),
+      originalPrice: p.original_price ? parseFloat(p.original_price) : null,
+      image: p.image,
+      images: p.images || [p.image],
+      badge: p.badge,
+      isNew: p.is_new,
+      isBestseller: p.is_bestseller,
+      description: p.description,
+      material: p.material,
+      rating: parseFloat(p.rating),
+      reviews: p.reviews,
+    }));
+  } catch (err) {
+    console.warn('API indisponivel, usando dados locais.', err);
+    products = _hardcodedProducts;
+  }
+}
 
 // ============================================
 // ESTADO GLOBAL
@@ -698,7 +726,8 @@ document.querySelector('.nav-logo').addEventListener('click', () => navigateTo('
 // ============================================
 // INIT
 // ============================================
-function init() {
+async function init() {
+  await loadProducts();
   renderFeatured();
   renderNew();
   updateCartCount();
