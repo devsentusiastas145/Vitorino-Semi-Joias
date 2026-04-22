@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin – Vitorino Semijoias</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+  <!-- ========== LOGIN ========== -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-bg">
+      <div class="login-pattern"></div>
+      <div class="login-gradient"></div>
+    </div>
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="login-star">✦</div>
+        <div>
+          <div class="login-brand">VITORINO</div>
+          <div class="login-sub">ÁREA ADMINISTRATIVA</div>
+        </div>
+      </div>
+      <h2 class="login-title">Bem-vinda de volta</h2>
+      <p class="login-desc">Acesse o painel de controle da sua loja</p>
+      <form class="login-form" id="loginForm">
+        <div class="login-field">
+          <label>Usuário</label>
+          <input type="text" id="loginUser" placeholder="seu usuário" autocomplete="username" />
+        </div>
+        <div class="login-field">
+          <label>Senha</label>
+          <div class="pass-wrap">
+            <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password" />
+            <button type="button" class="pass-toggle" onclick="togglePass()">
+              <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="login-error" id="loginError">Usuário ou senha incorretos</div>
+        <button type="submit" class="login-btn">Entrar no Painel ✦</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========== ADMIN PANEL ========== -->
+  <div class="admin-layout" id="adminPanel" style="display:none;">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="sb-star">✦</div>
+        <div>
+          <div class="sb-brand">VITORINO</div>
+          <div class="sb-role">Admin Panel</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-section="dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="#" class="nav-item" data-section="orders">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span>Pedidos</span>
+          <span class="nav-badge" id="pendingBadge" style="display:none;">0</span>
+        </a>
+        <a href="#" class="nav-item" data-section="products">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Produtos</span>
+        </a>
+        <a href="#" class="nav-item" data-section="customers">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>Clientes</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <a href="index.html" target="_blank" class="sb-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Ver Site
+        </a>
+        <button class="sb-logout" id="logoutBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sair
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="admin-main" id="adminMain">
+      <!-- TOP BAR -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" id="sidebarToggle">
+            <span></span><span></span><span></span>
+          </button>
+          <h1 class="topbar-title" id="pageTitle">Dashboard</h1>
+        </div>
+        <div class="topbar-right">
+          <div class="topbar-date" id="topbarDate"></div>
+          <div class="topbar-user">
+            <span class="user-name">Camila</span>
+            <div class="user-avatar">C</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENT WRAP -->
+      <div class="content-wrap">
+
+        <!-- ===== DASHBOARD ===== -->
+        <section class="content-section active" id="section-dashboard">
+          <div class="kpi-grid">
+            <div class="kpi-card kpi-orders">
+              <div class="kpi-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              </div>
+              <div class="kpi-info">
+                <div class="kpi-value" id="statOrders">–</div>
+                <div class="kpi-label">Total de Pedidos</div>
+              </div>
+            </div>
+            <div class="kpi-card kpi-revenue">
+              <div class="kpi-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </div>
+              <div class="kpi-info">
+                <div class="kpi-value" id="statRevenue">–</div>
+                <div class="kpi-label">Receita Total</div>
+              </div>
+            </div>
+            <div class="kpi-card kpi-customers">
+              <div class="kpi-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="kpi-info">
+                <div class="kpi-value" id="statCustomers">–</div>
+                <div class="kpi-label">Clientes Cadastrados</div>
+              </div>
+            </div>
+            <div class="kpi-card kpi-products">
+              <div class="kpi-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <div class="kpi-info">
+                <div class="kpi-value" id="statProducts">–</div>
+                <div class="kpi-label">Produtos Ativos</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dash-grid">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Pedidos Recentes</h3>
+                <button class="btn-text" onclick="switchSection('orders')">Ver todos →</button>
+              </div>
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Cliente</th>
+                      <th>Total</th>
+                      <th>Status</th>
+                      <th>Data</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recentOrdersBody">
+                    <tr><td colspan="5" class="empty-row">Carregando...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Vendas por Categoria</h3>
+              </div>
+              <div id="categoryStats" class="category-bars"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== PEDIDOS ===== -->
+        <section class="content-section" id="section-orders">
+          <div class="section-toolbar">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <input type="text" id="orderSearch" placeholder="Buscar por cliente ou e-mail..." oninput="filterOrders()" />
+            </div>
+            <select class="filter-select" id="statusFilter" onchange="filterOrders()">
+              <option value="">Todos os status</option>
+              <option value="pending">Pendente</option>
+              <option value="processing">Processando</option>
+              <option value="completed">Concluído</option>
+              <option value="cancelled">Cancelado</option>
+            </select>
+          </div>
+          <div class="card">
+            <div class="table-wrap">
+              <table class="data-table" id="ordersTable">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Cliente</th>
+                    <th>E-mail</th>
+                    <th>Itens</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Data</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="ordersBody">
+                  <tr><td colspan="8" class="empty-row">Carregando pedidos...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== PRODUTOS ===== -->
+        <section class="content-section" id="section-products">
+          <div class="section-toolbar">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <input type="text" id="productSearch" placeholder="Buscar produto..." oninput="filterProducts()" />
+            </div>
+            <select class="filter-select" id="catFilter" onchange="filterProducts()">
+              <option value="">Todas as categorias</option>
+              <option value="colares">Colares</option>
+              <option value="brincos">Brincos</option>
+              <option value="aneis">Anéis</option>
+              <option value="pulseiras">Pulseiras</option>
+            </select>
+            <button class="btn-primary" onclick="openProductModal()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Novo Produto
+            </button>
+          </div>
+          <div class="products-admin-grid" id="productsAdminGrid">
+            <div class="empty-row" style="padding:3rem;text-align:center;">Carregando produtos...</div>
+          </div>
+        </section>
+
+        <!-- ===== CLIENTES ===== -->
+        <section class="content-section" id="section-customers">
+          <div class="section-toolbar">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <input type="text" id="customerSearch" placeholder="Buscar cliente..." oninput="filterCustomers()" />
+            </div>
+          </div>
+          <div class="card">
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>CPF</th>
+                    <th>Endereço</th>
+                    <th>Pedidos</th>
+                    <th>Total Gasto</th>
+                  </tr>
+                </thead>
+                <tbody id="customersBody">
+                  <tr><td colspan="7" class="empty-row">Carregando clientes...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR OVERLAY MOBILE -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ===== PRODUCT MODAL ===== -->
+  <div class="modal-overlay" id="productModal">
+    <div class="modal-panel modal-large">
+      <div class="modal-header">
+        <h2 class="modal-title" id="productModalTitle">Novo Produto</h2>
+        <button class="modal-close" onclick="closeProductModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="editProductId" />
+        <div class="form-grid">
+          <div class="form-col-2">
+            <label class="form-label">Nome do Produto *</label>
+            <input class="form-input" type="text" id="pName" placeholder="Ex: Colar Lua Crescente" />
+          </div>
+          <div class="form-col-1">
+            <label class="form-label">Categoria *</label>
+            <select class="form-input" id="pCategory">
+              <option value="colares">Colares</option>
+              <option value="brincos">Brincos</option>
+              <option value="aneis">Anéis</option>
+              <option value="pulseiras">Pulseiras</option>
+            </select>
+          </div>
+          <div class="form-col-1">
+            <label class="form-label">Preço (R$) *</label>
+            <input class="form-input" type="number" id="pPrice" placeholder="0.00" step="0.01" min="0" />
+          </div>
+          <div class="form-col-1">
+            <label class="form-label">Preço Original <span class="label-opt">(opcional)</span></label>
+            <input class="form-input" type="number" id="pOriginalPrice" placeholder="0.00" step="0.01" min="0" />
+          </div>
+          <div class="form-col-1">
+            <label class="form-label">Destaque (Badge)</label>
+            <select class="form-input" id="pBadge">
+              <option value="">Nenhum</option>
+              <option value="new">Novo</option>
+              <option value="sale">Oferta</option>
+            </select>
+          </div>
+          <div class="form-col-2">
+            <label class="form-label">Material</label>
+            <input class="form-input" type="text" id="pMaterial" placeholder="Ex: Prata 925 com banho ouro 18k" />
+          </div>
+          <div class="form-col-1 checkbox-wrap">
+            <label class="checkbox-label">
+              <input type="checkbox" id="pIsNew" />
+              <span class="checkbox-box"></span>
+              <span>Marcar como Novidade</span>
+            </label>
+          </div>
+          <div class="form-col-1 checkbox-wrap">
+            <label class="checkbox-label">
+              <input type="checkbox" id="pIsBestseller" />
+              <span class="checkbox-box"></span>
+              <span>Marcar como Mais Vendida</span>
+            </label>
+          </div>
+          <div class="form-col-2">
+            <label class="form-label">Descrição</label>
+            <textarea class="form-input form-textarea" id="pDescription" rows="3" placeholder="Descreva a peça em detalhes..."></textarea>
+          </div>
+          <div class="form-col-2">
+            <label class="form-label">Foto Principal *</label>
+            <div class="upload-zone" id="mainUploadZone" onclick="document.getElementById('mainImgFile').click()">
+              <input type="file" id="mainImgFile" accept="image/*" style="display:none" onchange="handleMainUpload(this)" />
+              <div class="upload-placeholder" id="mainImgPlaceholder">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <p>Toque para adicionar foto</p>
+                <span>Galeria, câmera ou arquivos do computador</span>
+              </div>
+              <div class="upload-preview" id="mainImgPreviewWrap">
+                <img id="mainImgPreview" src="" alt="Preview da foto principal" />
+              </div>
+              <div class="upload-overlay">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Trocar foto
+              </div>
+              <div class="upload-loading-overlay" id="mainImgLoader" style="display:none;">
+                <div class="upload-spinner"></div>
+                <span>Enviando foto...</span>
+              </div>
+            </div>
+            <input type="hidden" id="pImage" />
+          </div>
+          <div class="form-col-2">
+            <label class="form-label">Fotos Adicionais <span class="label-opt">(opcional)</span></label>
+            <div class="extra-images-wrap" id="extraImagesWrap"></div>
+            <input type="file" id="extraImgFile" accept="image/*" style="display:none" onchange="handleExtraUpload(this)" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-ghost" onclick="closeProductModal()">Cancelar</button>
+        <button class="btn-primary" onclick="saveProduct()">Salvar Produto ✦</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ORDER DETAIL MODAL ===== -->
+  <div class="modal-overlay" id="orderModal">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <h2 class="modal-title">Detalhes do Pedido <span id="orderModalId" class="modal-id"></span></h2>
+        <button class="modal-close" onclick="closeOrderModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body" id="orderModalContent"></div>
+      <div class="modal-footer">
+        <button class="btn-ghost" onclick="closeOrderModal()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRM DELETE MODAL -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal-panel modal-sm">
+      <div class="modal-header">
+        <h2 class="modal-title">Confirmar Exclusão</h2>
+        <button class="modal-close" onclick="closeConfirmModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:0.9rem;color:var(--text-mid);line-height:1.7;">Tem certeza que deseja excluir este produto? Esta ação não pode ser desfeita.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-ghost" onclick="closeConfirmModal()">Cancelar</button>
+        <button class="btn-danger" id="confirmDeleteBtn">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="admin-toast" id="adminToast"></div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

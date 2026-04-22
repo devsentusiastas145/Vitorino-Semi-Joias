@@ -16,7 +16,7 @@ const cardForm = mp.cardForm({
 
       const data = cardForm.getCardFormData();
 
-      const response = await fetch("http://localhost:3000/criar-pagamento", {
+      const response = await fetch("/criar-pagamento", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

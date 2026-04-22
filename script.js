@@ -171,7 +171,7 @@ const _hardcodedProducts = [
 
 async function loadProducts() {
   try {
-    const res = await fetch('http://localhost:3000/produtos');
+    const res = await fetch('/produtos');
     const data = await res.json();
     products = data.map(p => ({
       id: p.id,
@@ -599,7 +599,7 @@ async function placeOrder() {
   }
 
   try {
-    const res = await fetch('http://localhost:3000/criar-pagamento', {
+    const res = await fetch('/criar-pagamento', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ cart }),
